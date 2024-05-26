@@ -6,6 +6,7 @@ import dct
 import quantization
 import zigzag
 
+# создание матриц 8х8 из исходной
 def SplitToBlocks(array, nrows=8, ncols=8):
     array = np.array(array)
     r, h = array.shape
@@ -18,6 +19,7 @@ def SplitToBlocks(array, nrows=8, ncols=8):
         ret += subarray[::1]
     return np.array(ret)
 
+# объединение матриц 8х8
 def MergeBlocks(array, nrows, ncols):
     array = np.array(array)
     #print(array)
@@ -31,6 +33,7 @@ def MergeBlocks(array, nrows, ncols):
     ret = np.concatenate(ret, axis=0)
     return ret
 
+# получение массивов сжатого изображения
 def GetResultArrays(__path, qual):
     img = converter.ToYCbCr(np.array(Image.open(__path)))
     i, j, k = img.shape
@@ -66,6 +69,7 @@ def GetResultArrays(__path, qual):
     #print(len(img2), len(img2[0]))
     return resYc, resCb, resCr, len(img2), len(img2[0])
 
+# вывод изображения из полученных массивов
 def ShowImageFromResultArrays(resYc, resCb, resCr, horiz, vert, qual):
     Yc = [None for i in range(len(resYc))]
     Cb = [None for i in range(len(resCb))]
@@ -109,8 +113,11 @@ def ShowImageFromResultArrays(resYc, resCb, resCr, horiz, vert, qual):
     img3 = np.array(img3) + 128
     #img2 = np.concatenate((Yc, Cb, Cr), axis=3)
 
-    Image.fromarray(img3, mode="YCbCr").show()
+    img = Image.fromarray(img3, mode="YCbCr")
+    img.show()
+    #img.save(f"output{qual}.jpg")
 
+# кодирование и декодирование RLE
 def run_length_encoding(string):
     encoded_string = ''
     count = 1
@@ -150,6 +157,7 @@ def run_length_decoding(string):
             #i += 1
     return decoded_string
 
+# сжатие изображения и запись его в файл
 def Compress(__path, qual):
     resYc, resCb, resCr, img2v, img2h = GetResultArrays(__path, qual)
     #print(resYc)
@@ -187,7 +195,7 @@ def Compress(__path, qual):
         f.write(data)
         f.close()
 
-
+# распаковка изображения
 def Show(__path):
     with open(__path, 'rb') as f:
         data = f.read()
@@ -226,5 +234,7 @@ def Show(__path):
     resCr = [resCr[i:i+64] for i in range(0, len(resCr), 64)]
     ShowImageFromResultArrays(resYc, resCb, resCr, img2h*2, img2v*2, qual)
 
-Compress("capybara.jpg", 50)
+Compress("capybara.jpg", 99)
 Show("compressed.bin")
+
+

@@ -1,6 +1,7 @@
 import numpy as np
 from scipy.fft import dct, idct
 
+# Получение матрицы для дискретного косинусного преобразования
 def GetH():
     n = 8
     a = np.random.randint(0, 100, (n, n))
@@ -17,6 +18,7 @@ def GetH():
 
 H = GetH()
 
+# ДКП и обратное ДКП
 def DCT(a):
     global H
     h = H

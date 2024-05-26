@@ -1,6 +1,6 @@
 import numpy as np
 
-
+# Обход матрицы зигзагом
 def zigzag(a):
     res = []
     x, y = 0, 0
@@ -22,6 +22,7 @@ def zigzag(a):
 
     return res
 
+# Восстановление матрицы
 def inverseZigZag(res, n):
     b = np.zeros((n, n))
     x, y = 0, 0

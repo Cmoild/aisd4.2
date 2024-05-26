@@ -1,14 +1,16 @@
 import numpy as np
 
+# Даунсемплинг удалением
 def DownsamplingByDelete(img):
     return img[::2, ::2, :]
 
+# Апсемплинг повторением
 def UpsamplingByRepeat(img):
     return np.repeat(np.repeat(img, 2, axis=0), 2, axis=1)
 
 from PIL import Image
-#Image.fromarray(Downsampling(np.array(Image.open("capybara.jpg")))).show()
-#Image.fromarray(Upsampling(Downsampling(np.array(Image.open("capybara.jpg"))))).show()
+
+# Даунсемплинг взятием среднего значения
 def DownsamplingByAverage(img):
     i, j, k = img.shape
     sh = [i, j, k]
@@ -23,6 +25,7 @@ def DownsamplingByAverage(img):
                 newimg[i//2, j//2, k] = (img[i, j, k]/4 + img[i+1, j, k]/4 + img[i, j+1, k]/4 + img[i+1, j+1, k]/4)
     return newimg
 
+# Даунсемплинг взятием ближайшего к среднему значению
 def DownsamplingByNearToAverage(img):
     i, j, k = img.shape
     sh = [i, j, k]

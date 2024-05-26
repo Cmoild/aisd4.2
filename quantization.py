@@ -19,6 +19,7 @@ chromQ = np.array([[17, 18, 24, 47, 99, 99, 99, 99],
     [99, 99, 99, 99, 99, 99, 99, 99],
     [99, 99, 99, 99, 99, 99, 99, 99]])
 
+# Получение матрицы квантования
 def GetQuantMatrix(quality, isLuminance = True):
     scaleFactor = 5000 / quality if quality <= 50 else 200 - quality * 2
     if isLuminance:
@@ -33,7 +34,8 @@ def GetQuantMatrix(quality, isLuminance = True):
             for j in range(8):
                 chromQuantMatrix[i][j] = np.ceil((chromQuantMatrix[i][j] * scaleFactor + 50)/100)
         return chromQuantMatrix
-    
+
+# Квантование и обратное квантование
 def Quantize(Cdct, isLuminance = True, Q = 50):
     quantMatrix = GetQuantMatrix(Q, isLuminance) if isLuminance else GetQuantMatrix(50, False)
     for i in range(8):
